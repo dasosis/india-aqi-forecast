@@ -47,3 +47,27 @@ def test_open_meteo_lists_become_a_table():
     df = parse_open_meteo(data, "Mumbai")
     assert list(df.columns) == ["city", "date", "temperature_2m_mean"]
     assert df["city"].tolist() == ["Mumbai", "Mumbai"]
+
+
+def test_daily_pm25_asks_for_the_date_range_and_drops_extra_days(monkeypatch):
+    from datetime import date
+
+    from aqi_forecast import ingest
+
+    calls = []
+
+    def fake_get(path, api_key, params):
+        calls.append(params)
+        days = ["2016-01-30", "2026-10-01", "2026-10-02", "2026-10-03"]
+        return {
+            "results": [
+                {"value": 50.0, "period": {"datetimeFrom": {"local": f"{d}T00:00:00+05:30"}}}
+                for d in days
+            ]
+        }
+
+    monkeypatch.setattr(ingest, "openaq_get", fake_get)
+    rows = ingest.daily_pm25({"sensor_id": 1}, date(2026, 10, 1), date(2026, 10, 2), "key")
+
+    assert calls[0]["date_from"] == "2026-10-01"
+    assert [r["date"] for r in rows] == ["2026-10-01", "2026-10-02"]

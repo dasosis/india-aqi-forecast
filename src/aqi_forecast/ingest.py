@@ -91,15 +91,16 @@ def daily_pm25(sensor: dict, start: date, end: date, api_key: str) -> list[dict]
             f"/sensors/{sensor['sensor_id']}/days",
             api_key,
             {
-                "datetime_from": start.isoformat(),
-                "datetime_to": (end + timedelta(days=1)).isoformat(),
+                "date_from": start.isoformat(),
+                "date_to": (end + timedelta(days=1)).isoformat(),
                 "limit": 1000,
                 "page": page,
             },
         )
         rows += parse_daily_pm25(data, sensor)
         if len(data["results"]) < 1000:
-            return rows
+            # keep only our date range, in case the API returns extra days
+            return [r for r in rows if start.isoformat() <= r["date"] <= end.isoformat()]
         page += 1
 
 
