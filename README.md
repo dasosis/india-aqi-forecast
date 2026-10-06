@@ -12,6 +12,21 @@ uv sync          # creates .venv and installs everything from uv.lock
 uv run pytest    # checks the setup works
 ```
 
+## Download the data
+
+```bash
+cp .env.example .env    # then paste your free OpenAQ key into .env
+uv run python -m aqi_forecast.ingest --days 90
+```
+
+This writes three CSVs to `data/raw/`:
+
+| File | What's in it | Source |
+| --- | --- | --- |
+| `pm25_stations.csv` | Daily PM2.5 measured at every station within 25 km of each city | [OpenAQ](https://openaq.org) (CPCB and other stations) |
+| `weather.csv` | Daily temperature, humidity, rain and wind for each city | [Open-Meteo archive](https://open-meteo.com/en/docs/historical-weather-api) |
+| `cams_pm25.csv` | Daily PM2.5 predicted by the CAMS model, our baseline to beat | [Open-Meteo air quality](https://open-meteo.com/en/docs/air-quality-api) |
+
 ## Layout
 
 | Folder | What goes there |
@@ -28,7 +43,7 @@ uv run pytest    # checks the setup works
 Each stage adds one working piece and teaches one MLOps idea.
 
 - [x] 0. Project setup: reproducible environment
-- [ ] 1. Get the data: data ingestion
+- [x] 1. Get the data: data ingestion
 - [ ] 2. First model: baselines and evaluation
 - [ ] 3. Notebook to pipeline: pipelines and data validation
 - [ ] 4. Version the data: DVC
@@ -42,4 +57,3 @@ Each stage adds one working piece and teaches one MLOps idea.
 
 - [OpenAQ](https://openaq.org) for measured station data (free API key)
 - [Open-Meteo](https://open-meteo.com) for weather and CAMS air-quality forecasts
-- [Kaggle: Air Quality Data in India](https://www.kaggle.com/datasets/rohanrao/air-quality-data-in-india) (CPCB, 2015 to 2020)

@@ -1,3 +1,5 @@
 """Next-day AQI forecasting for Indian cities."""
 
-CITIES = ["Delhi", "Mumbai", "Bengaluru"]
+from aqi_forecast.config import CITIES as _CITIES
+
+CITIES = list(_CITIES)
