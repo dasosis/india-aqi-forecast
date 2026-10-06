@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+.env
+
+# data and models stay out of Git (DVC handles them from stage 4)
+data/raw/*
+data/processed/*
+models/*
+!**/.gitkeep
