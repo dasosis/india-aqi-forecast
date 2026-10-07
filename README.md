@@ -27,6 +27,18 @@ This writes three CSVs to `data/raw/`:
 | `weather.csv` | Daily temperature, humidity, rain and wind for each city | [Open-Meteo archive](https://open-meteo.com/en/docs/historical-weather-api) |
 | `cams_pm25.csv` | Daily PM2.5 predicted by the CAMS model, our baseline to beat | [Open-Meteo air quality](https://open-meteo.com/en/docs/air-quality-api) |
 
+## Results so far
+
+Next-day PM2.5, tested on Jan to Oct 2026 (see [`notebooks/02_first_model.ipynb`](notebooks/02_first_model.ipynb)):
+
+| Forecast | Average error (µg/m³) | AQI category right |
+| --- | --- | --- |
+| Tomorrow = today (persistence) | 8.4 | 80% |
+| CAMS model | 18.8 | 62% |
+| **Ridge on log change (ours)** | **7.1** | **81%** |
+
+To rerun it: `uv run jupyter lab notebooks/02_first_model.ipynb`
+
 ## Layout
 
 | Folder | What goes there |
@@ -44,7 +56,7 @@ Each stage adds one working piece and teaches one MLOps idea.
 
 - [x] 0. Project setup: reproducible environment
 - [x] 1. Get the data: data ingestion
-- [ ] 2. First model: baselines and evaluation
+- [x] 2. First model: baselines and evaluation
 - [ ] 3. Notebook to pipeline: pipelines and data validation
 - [ ] 4. Version the data: DVC
 - [ ] 5. Track experiments: MLflow
