@@ -5,8 +5,10 @@ __pycache__/
 .ipynb_checkpoints/
 .env
 
-# data and models stay out of Git (DVC handles them from stage 4)
+# data and models stay out of Git; DVC tracks them (see dvc.yaml)
 data/raw/*
 data/processed/*
 models/*
+!models/metrics.json
+!models/latest_forecast.csv
 !**/.gitkeep

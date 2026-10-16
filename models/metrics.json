@@ -1,0 +1,20 @@
+{
+  "test_start": "2026-01-01",
+  "train_rows": 978,
+  "test_rows": 753,
+  "last_date": "2026-10-05",
+  "metrics": {
+    "persistence": {
+      "mae": 8.45,
+      "category_accuracy": 0.801
+    },
+    "cams": {
+      "mae": 18.85,
+      "category_accuracy": 0.615
+    },
+    "model": {
+      "mae": 7.08,
+      "category_accuracy": 0.81
+    }
+  }
+}

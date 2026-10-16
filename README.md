@@ -45,6 +45,24 @@ uv run pytest                           # checks cleaning, features and validati
 | `train.py` | Time-based split, scores against baselines, saves model and metrics |
 | `predict.py` | Loads the saved model and forecasts tomorrow |
 
+## Run the whole pipeline with DVC
+
+[DVC](https://dvc.org) is like Git for data and models. `dvc.yaml` lists the steps (ingest, train, predict) and what each one depends on. `params.yaml` holds the settings. `dvc.lock` records the exact fingerprint (hash) of every input and output from the last run, and it's committed to Git, so every commit says exactly which data trained which model.
+
+```bash
+uv run dvc repro                 # run only the steps whose inputs changed
+uv run dvc repro --force ingest  # download fresh data, then rerun what depends on it
+uv run dvc push                  # back up data and models to the DVC store (../dvc-storage)
+uv run dvc metrics show          # this run's scores
+uv run dvc metrics diff main     # compare scores with the main branch
+```
+
+Go back to the data and model from any past commit:
+
+```bash
+git checkout <commit> && uv run dvc checkout
+```
+
 ## Results so far
 
 Next-day PM2.5, tested on Jan to Oct 2026 (see [`notebooks/02_first_model.ipynb`](notebooks/02_first_model.ipynb)):
@@ -76,7 +94,7 @@ Each stage adds one working piece and teaches one MLOps idea.
 - [x] 1. Get the data: data ingestion
 - [x] 2. First model: baselines and evaluation
 - [x] 3. Notebook to pipeline: pipelines and data validation
-- [ ] 4. Version the data: DVC
+- [x] 4. Version the data: DVC
 - [ ] 5. Track experiments: MLflow
 - [ ] 6. Run it every day: orchestration with Prefect
 - [ ] 7. Serve predictions: FastAPI and Docker

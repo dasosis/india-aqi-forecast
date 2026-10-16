@@ -1,0 +1,4 @@
+# Keep LF line endings on every OS so DVC file hashes match on Windows and Linux
+* text=auto eol=lf
+*.ipynb text eol=lf
+*.joblib binary

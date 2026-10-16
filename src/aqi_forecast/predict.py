@@ -29,7 +29,7 @@ def main() -> None:
     model = joblib.load(MODELS_DIR / "model.joblib")
     result = forecast(model, build_dataset(keep_unlabelled=True))
     print(result.to_string(index=False))
-    result.to_csv(MODELS_DIR / "latest_forecast.csv", index=False)
+    result.to_csv(MODELS_DIR / "latest_forecast.csv", index=False, lineterminator="\n")
 
 
 if __name__ == "__main__":
