@@ -63,6 +63,17 @@ Go back to the data and model from any past commit:
 git checkout <commit> && uv run dvc checkout
 ```
 
+## Track experiments with MLflow
+
+Every training run is logged to [MLflow](https://mlflow.org): its settings, the data fingerprint, the Git commit, scores for the model and both baselines, and the model itself. Each model that beats persistence is saved in the **model registry** as `pm25-forecaster`. The one with the lowest test MAE gets the `champion` label.
+
+```bash
+uv run python -m aqi_forecast.train --model lgb_change   # try the other model kind
+uv run mlflow ui --backend-store-uri sqlite:///mlflow.db  # open http://localhost:5000
+```
+
+To make a model kind the default for `dvc repro`, change `train.model` in `params.yaml`. Champion comparisons only make sense when runs share the same test period (`train.test_start`).
+
 ## Results so far
 
 Next-day PM2.5, tested on Jan to Oct 2026 (see [`notebooks/02_first_model.ipynb`](notebooks/02_first_model.ipynb)):
@@ -95,7 +106,7 @@ Each stage adds one working piece and teaches one MLOps idea.
 - [x] 2. First model: baselines and evaluation
 - [x] 3. Notebook to pipeline: pipelines and data validation
 - [x] 4. Version the data: DVC
-- [ ] 5. Track experiments: MLflow
+- [x] 5. Track experiments: MLflow
 - [ ] 6. Run it every day: orchestration with Prefect
 - [ ] 7. Serve predictions: FastAPI and Docker
 - [ ] 8. Automate checks: CI/CD with GitHub Actions
