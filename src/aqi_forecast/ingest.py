@@ -190,7 +190,7 @@ def main() -> None:
         "cams_pm25.csv": pd.concat(cams),
     }
     for name, df in outputs.items():
-        df.to_csv(RAW_DIR / name, index=False)
+        df.to_csv(RAW_DIR / name, index=False, lineterminator="\n")
         print(f"Wrote {len(df):>6} rows to data/raw/{name}")
 
 

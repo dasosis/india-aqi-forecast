@@ -1,0 +1,5 @@
+# Settings for the pipeline. Change a value here and `dvc repro` reruns only what depends on it.
+ingest:
+  days: 1500
+train:
+  test_start: "2026-01-01"

@@ -1,0 +1,42 @@
+# The pipeline, step by step. `uv run dvc repro` runs whatever is out of date.
+stages:
+  ingest:
+    cmd: python -m aqi_forecast.ingest --days ${ingest.days}
+    deps:
+      - src/aqi_forecast/ingest.py
+      - src/aqi_forecast/config.py
+    params:
+      - ingest.days
+    outs:
+      - data/raw/pm25_stations.csv
+      - data/raw/weather.csv
+      - data/raw/cams_pm25.csv
+
+  train:
+    cmd: python -m aqi_forecast.train --test-start ${train.test_start}
+    deps:
+      - data/raw/pm25_stations.csv
+      - data/raw/weather.csv
+      - data/raw/cams_pm25.csv
+      - src/aqi_forecast/features.py
+      - src/aqi_forecast/model.py
+      - src/aqi_forecast/train.py
+    params:
+      - train.test_start
+    outs:
+      - models/model.joblib
+    metrics:
+      - models/metrics.json:
+          cache: false
+
+  predict:
+    cmd: python -m aqi_forecast.predict
+    deps:
+      - models/model.joblib
+      - data/raw/pm25_stations.csv
+      - data/raw/weather.csv
+      - data/raw/cams_pm25.csv
+      - src/aqi_forecast/predict.py
+    outs:
+      - models/latest_forecast.csv:
+          cache: false
