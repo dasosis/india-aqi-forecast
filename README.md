@@ -27,6 +27,24 @@ This writes three CSVs to `data/raw/`:
 | `weather.csv` | Daily temperature, humidity, rain and wind for each city | [Open-Meteo archive](https://open-meteo.com/en/docs/historical-weather-api) |
 | `cams_pm25.csv` | Daily PM2.5 predicted by the CAMS model, our baseline to beat | [Open-Meteo air quality](https://open-meteo.com/en/docs/air-quality-api) |
 
+## Train and forecast
+
+```bash
+uv run python -m aqi_forecast.train     # trains, compares with baselines, saves models/model.joblib
+uv run python -m aqi_forecast.predict   # forecasts the next day for each city
+uv run pytest                           # checks cleaning, features and validation rules
+```
+
+`train` refuses to save a model that doesn't beat "tomorrow equals today".
+
+| Module | What it does |
+| --- | --- |
+| `ingest.py` | Downloads raw data |
+| `features.py` | Validates raw data, cleans it, builds features |
+| `model.py` | The ridge model and its inputs |
+| `train.py` | Time-based split, scores against baselines, saves model and metrics |
+| `predict.py` | Loads the saved model and forecasts tomorrow |
+
 ## Results so far
 
 Next-day PM2.5, tested on Jan to Oct 2026 (see [`notebooks/02_first_model.ipynb`](notebooks/02_first_model.ipynb)):
@@ -57,7 +75,7 @@ Each stage adds one working piece and teaches one MLOps idea.
 - [x] 0. Project setup: reproducible environment
 - [x] 1. Get the data: data ingestion
 - [x] 2. First model: baselines and evaluation
-- [ ] 3. Notebook to pipeline: pipelines and data validation
+- [x] 3. Notebook to pipeline: pipelines and data validation
 - [ ] 4. Version the data: DVC
 - [ ] 5. Track experiments: MLflow
 - [ ] 6. Run it every day: orchestration with Prefect
