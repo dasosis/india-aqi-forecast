@@ -13,7 +13,7 @@ stages:
       - data/raw/cams_pm25.csv
 
   train:
-    cmd: python -m aqi_forecast.train --test-start ${train.test_start}
+    cmd: python -m aqi_forecast.train --test-start ${train.test_start} --model ${train.model}
     deps:
       - data/raw/pm25_stations.csv
       - data/raw/weather.csv
@@ -23,6 +23,7 @@ stages:
       - src/aqi_forecast/train.py
     params:
       - train.test_start
+      - train.model
     outs:
       - models/model.joblib
     metrics:

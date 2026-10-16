@@ -12,3 +12,8 @@ models/*
 !models/metrics.json
 !models/latest_forecast.csv
 !**/.gitkeep
+
+# MLflow's local tracking database and saved runs
+mlflow.db
+mlruns/
+mlartifacts/

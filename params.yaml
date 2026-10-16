@@ -3,3 +3,4 @@ ingest:
   days: 1500
 train:
   test_start: "2026-01-01"
+  model: ridge  # ridge or lgb_change

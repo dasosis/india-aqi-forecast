@@ -28,7 +28,7 @@ stages:
       md5: 12a0cec271ae13c53740c4ac4fa3ff51
       size: 182156
   train:
-    cmd: python -m aqi_forecast.train --test-start 2026-01-01
+    cmd: python -m aqi_forecast.train --test-start 2026-01-01 --model ridge
     deps:
     - path: data/raw/cams_pm25.csv
       hash: md5
@@ -48,24 +48,25 @@ stages:
       size: 4772
     - path: src/aqi_forecast/model.py
       hash: md5
-      md5: 0f2760b0eaaab29ab29eceb1c147d23b
-      size: 1285
+      md5: c17dba85e8551fafd6c16c0014b10305
+      size: 3095
     - path: src/aqi_forecast/train.py
       hash: md5
-      md5: 2d6c6a6db73e1735d8a77c00d716bf47
-      size: 2402
+      md5: ba4d1a434171d421fdd3495b0156cf7e
+      size: 5968
     params:
       params.yaml:
+        train.model: ridge
         train.test_start: '2026-01-01'
     outs:
     - path: models/metrics.json
       hash: md5
-      md5: 7a48436f83b53749ebbe431a720e9940
-      size: 348
+      md5: 98d9972cbaf50daf9c11ba636e30db27
+      size: 368
     - path: models/model.joblib
       hash: md5
-      md5: 6883cd8d6712c0fe76efe07373fb4f8b
-      size: 2453
+      md5: 294050380fb6f9c6932689dc40052069
+      size: 2519
   predict:
     cmd: python -m aqi_forecast.predict
     deps:
@@ -83,8 +84,8 @@ stages:
       size: 182156
     - path: models/model.joblib
       hash: md5
-      md5: 6883cd8d6712c0fe76efe07373fb4f8b
-      size: 2453
+      md5: 294050380fb6f9c6932689dc40052069
+      size: 2519
     - path: src/aqi_forecast/predict.py
       hash: md5
       md5: 19914e25a763eaeff4eab87c56ccd991
